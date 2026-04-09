@@ -1,3 +1,4 @@
+require("dotenv").config()
 const express = require("express")
 const cors = require("cors")
 
@@ -9,10 +10,12 @@ app.use(express.json())
 const turfRoutes = require("./routes/turfRoutes")
 const bookingRoutes = require("./routes/bookingRoutes")
 const authRoutes = require("./routes/authRoutes")
+const paymentRoutes = require("./routes/paymentRoutes")
 
 app.use("/api/turfs", turfRoutes)
 app.use("/api/bookings", bookingRoutes)
 app.use("/api/auth", authRoutes)
+app.use("/api/payment", paymentRoutes)
 
 app.get("/", (req,res)=>{
 res.send("API Running")
