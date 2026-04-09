@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import API from '../services/api'
+import TurfCard from '../components/TurfCard'
 
 const Home = () => {
 
@@ -16,19 +17,11 @@ setTurfs(res.data)
 
 return (
 
-<div>
-
-<h1>Available Turfs</h1>
+<div className="grid grid-cols-3 gap-4 p-4">
 
 {
 turfs.map(turf=>(
-<div key={turf.id}>
-
-<h3>{turf.name}</h3>
-<p>{turf.location}</p>
-<p>₹{turf.price_per_hour}</p>
-
-</div>
+<TurfCard key={turf.id} turf={turf}/>
 ))
 }
 
