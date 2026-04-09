@@ -8,11 +8,12 @@ const { id } = useParams()
 
 const [date,setDate] = useState("")
 const [time,setTime] = useState("")
+const user = JSON.parse(localStorage.getItem("user"))
 
 const handleBooking = async ()=>{
 
 await API.post("/bookings",{
-user_id:1,
+user_id:user.id,
 turf_id:id,
 booking_date:date,
 time_slot:time
