@@ -1,9 +1,26 @@
 import React, { useState } from 'react'
+import API from '../services/api'
+import { useParams } from 'react-router-dom'
 
 const Booking = () => {
 
+const { id } = useParams()
+
 const [date,setDate] = useState("")
 const [time,setTime] = useState("")
+
+const handleBooking = async ()=>{
+
+await API.post("/bookings",{
+user_id:1,
+turf_id:id,
+booking_date:date,
+time_slot:time
+})
+
+alert("Booking Created")
+
+}
 
 return (
 
@@ -32,7 +49,10 @@ className="border p-2 mt-2"
 
 </select>
 
-<button className="bg-blue-500 text-white px-4 py-2 mt-3">
+<button 
+onClick={handleBooking}
+className="bg-blue-500 text-white px-4 py-2 mt-3"
+>
 
 Confirm Booking
 
