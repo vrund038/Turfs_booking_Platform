@@ -3,6 +3,7 @@ import Home from "./pages/Home"
 import TurfDetails from "./pages/TurfDetails"
 import Booking from "./pages/Booking"
 import Login from "./pages/Login"
+import BookingSuccess from "./pages/BookingSuccess"
 
 function App() {
 
@@ -16,7 +17,7 @@ return (
 <Route path="/turf/:id" element={<TurfDetails/>}/>
 <Route path="/booking/:id" element={<Booking/>}/>
 <Route path="/login" element={<Login/>}/>
-
+<Route path="/success" element={<BookingSuccess/>}/>
 </Routes>
 
 </BrowserRouter>

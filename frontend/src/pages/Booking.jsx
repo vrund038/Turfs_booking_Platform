@@ -12,6 +12,19 @@ const user = JSON.parse(localStorage.getItem("user"))
 
 const handleBooking = async ()=>{
 
+const order = await API.post("/payment/create-order",{
+amount:500
+})
+
+const options = {
+
+key: "rzp_test_SbSycldtbWv6CV",
+amount: order.data.amount,
+currency: "INR",
+order_id: order.data.id,
+
+handler: async function(){
+
 await API.post("/bookings",{
 user_id:user.id,
 turf_id:id,
@@ -19,10 +32,16 @@ booking_date:date,
 time_slot:time
 })
 
-alert("Booking Created")
+alert("Booking Confirmed")
 
 }
 
+}
+
+const razor = new window.Razorpay(options)
+razor.open()
+
+}
 return (
 
 <div className="p-4">
