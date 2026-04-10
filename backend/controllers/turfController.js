@@ -29,9 +29,31 @@ const getSingleTurf = async(req,res)=>{
     }
 }
 
+const addTurf = async(req,res)=>{
+
+try{
+
+const { name, location, price_per_hour, image } = req.body
+
+const turf = await pool.query(
+`INSERT INTO turfs(name,location,price_per_hour,image)
+VALUES($1,$2,$3,$4)
+RETURNING *`,
+[name,location,price_per_hour,image]
+)
+
+res.json(turf.rows[0])
+
+}catch(error){
+console.log(error)
+}
+
+}
+
 
 // Export Controllers (ADD THIS AT BOTTOM)
 module.exports = {
 getTurfs,
-getSingleTurf
+getSingleTurf,
+addTurf
 }
