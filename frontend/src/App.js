@@ -4,6 +4,7 @@ import TurfDetails from "./pages/TurfDetails"
 import Booking from "./pages/Booking"
 import Login from "./pages/Login"
 import BookingSuccess from "./pages/BookingSuccess"
+import AdminDashboard from "./pages/AdminDashboard"
 
 function App() {
 
@@ -18,6 +19,7 @@ return (
 <Route path="/booking/:id" element={<Booking/>}/>
 <Route path="/login" element={<Login/>}/>
 <Route path="/success" element={<BookingSuccess/>}/>
+<Route path="/admin" element={<AdminDashboard/>}/>
 </Routes>
 
 </BrowserRouter>
