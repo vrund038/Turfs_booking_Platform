@@ -5,6 +5,7 @@ import Booking from "./pages/Booking"
 import Login from "./pages/Login"
 import BookingSuccess from "./pages/BookingSuccess"
 import AdminDashboard from "./pages/AdminDashboard"
+import Tournament from "./pages/Tournament"
 
 function App() {
 
@@ -20,6 +21,7 @@ return (
 <Route path="/login" element={<Login/>}/>
 <Route path="/success" element={<BookingSuccess/>}/>
 <Route path="/admin" element={<AdminDashboard/>}/>
+<Route path="/tournament" element={<Tournament/>}/>
 </Routes>
 
 </BrowserRouter>
