@@ -50,10 +50,42 @@ console.log(error)
 
 }
 
+const getFeaturedTurfs = async(req,res)=>{
+
+try{
+
+const turfs = await pool.query(
+"SELECT * FROM turfs WHERE featured=true"
+)
+
+res.json(turfs.rows)
+
+}catch(error){
+console.log(error)
+}
+
+}
+
+
+const setFeatured = async(req,res)=>{
+
+const { id } = req.params
+
+await pool.query(
+"UPDATE turfs SET featured=true WHERE id=$1",
+[id]
+)
+
+res.json("Turf Featured")
+
+}
+
 
 // Export Controllers (ADD THIS AT BOTTOM)
 module.exports = {
 getTurfs,
 getSingleTurf,
-addTurf
+addTurf,
+getFeaturedTurfs,
+setFeatured
 }
