@@ -6,6 +6,8 @@ import Login from "./pages/Login"
 import BookingSuccess from "./pages/BookingSuccess"
 import AdminDashboard from "./pages/AdminDashboard"
 import Tournament from "./pages/Tournament"
+import RegisterTeam from "./pages/RegisterTeam"
+import TournamentDetails from "./pages/TournamentDetails"
 
 function App() {
 
@@ -22,6 +24,8 @@ return (
 <Route path="/success" element={<BookingSuccess/>}/>
 <Route path="/admin" element={<AdminDashboard/>}/>
 <Route path="/tournament" element={<Tournament/>}/>
+<Route path="/register-team/:id" element={<RegisterTeam/>}/>
+<Route path="/tournament/:id" element={<TournamentDetails/>}/>
 </Routes>
 
 </BrowserRouter>
