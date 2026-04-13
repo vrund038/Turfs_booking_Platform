@@ -13,6 +13,7 @@ const authRoutes = require("./routes/authRoutes")
 const paymentRoutes = require("./routes/paymentRoutes")
 const tournamentRoutes = require("./routes/tournamentRoutes")
 const teamRoutes = require("./routes/teamRoutes")
+const matchRoutes = require("./routes/matchRoutes")
 
 app.use("/api/turfs", turfRoutes)
 app.use("/api/bookings", bookingRoutes)
@@ -20,6 +21,7 @@ app.use("/api/auth", authRoutes)
 app.use("/api/payment", paymentRoutes)
 app.use("/api/tournaments", tournamentRoutes)
 app.use("/api/teams", teamRoutes)
+app.use("/api/matches", matchRoutes)
 
 app.get("/", (req,res)=>{
 res.send("API Running")
