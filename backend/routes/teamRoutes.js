@@ -2,11 +2,11 @@ const express = require("express")
 const router = express.Router()
 
 const {
-registerTeam,
+addTeam,
 getTeams
 } = require("../controllers/teamController")
 
-router.post("/", registerTeam)
+router.post("/", addTeam)
 router.get("/:tournament_id", getTeams)
 
 module.exports = router
