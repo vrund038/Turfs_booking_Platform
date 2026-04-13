@@ -1,5 +1,7 @@
 const pool = require("../config/db")
 
+// Generate Matches
+
 const generateMatches = async(req,res)=>{
 
 try{
@@ -49,6 +51,9 @@ console.log(error)
 
 }
 
+
+// Get Matches
+
 const getMatches = async(req,res)=>{
 
 try{
@@ -59,10 +64,12 @@ const matches = await pool.query(
 `SELECT 
 m.id,
 t1.team_name as team1,
-t2.team_name as team2
+t2.team_name as team2,
+m.team1_score,
+m.team2_score
 FROM matches m
-LEFT JOIN teams t1 ON m.team1 = t1.id
-LEFT JOIN teams t2 ON m.team2 = t2.id
+JOIN teams t1 ON m.team1 = t1.id
+JOIN teams t2 ON m.team2 = t2.id
 WHERE m.tournament_id=$1`,
 [tournament_id]
 )
@@ -77,7 +84,68 @@ res.status(500).json(error.message)
 }
 
 }
+
+// Update Match Score
+
+const updateMatch = async(req,res)=>{
+
+try{
+
+const { id } = req.params
+
+const { team1_score, team2_score, winner } = req.body
+
+await pool.query(
+`UPDATE matches
+SET team1_score=$1,
+team2_score=$2,
+winner=$3
+WHERE id=$4`,
+[team1_score, team2_score, winner, id]
+)
+
+res.json("Match Updated")
+
+}catch(error){
+console.log(error)
+}
+
+}
+
+
+// Points Table
+
+const getPoints = async(req,res)=>{
+
+const { tournament_id } = req.params
+
+const points = await pool.query(
+
+`SELECT 
+teams.team_name,
+COUNT(matches.winner) as wins
+
+FROM teams
+
+LEFT JOIN matches 
+ON teams.id = matches.winner
+
+WHERE teams.tournament_id=$1
+
+GROUP BY teams.team_name
+`,
+[tournament_id]
+
+)
+
+res.json(points.rows)
+
+}
+
+
 module.exports = {
 generateMatches,
-getMatches
+getMatches,
+updateMatch,
+getPoints
 }
