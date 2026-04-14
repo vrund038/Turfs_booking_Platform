@@ -122,6 +122,38 @@ const { tournament_id } = req.params
 const points = await pool.query(
 
 `SELECT 
+teams.id,
+teams.team_name,
+COUNT(matches.winner) as wins
+
+FROM teams
+
+LEFT JOIN matches 
+ON teams.id = matches.winner
+
+WHERE teams.tournament_id=$1
+
+GROUP BY teams.id
+
+ORDER BY wins DESC
+`,
+[tournament_id]
+
+)
+
+res.json(points.rows)
+
+}
+
+
+//winner
+const getWinner = async(req,res)=>{
+
+const { tournament_id } = req.params
+
+const winner = await pool.query(
+
+`SELECT 
 teams.team_name,
 COUNT(matches.winner) as wins
 
@@ -133,12 +165,16 @@ ON teams.id = matches.winner
 WHERE teams.tournament_id=$1
 
 GROUP BY teams.team_name
+
+ORDER BY wins DESC
+
+LIMIT 1
 `,
 [tournament_id]
 
 )
 
-res.json(points.rows)
+res.json(winner.rows[0])
 
 }
 
@@ -147,5 +183,6 @@ module.exports = {
 generateMatches,
 getMatches,
 updateMatch,
-getPoints
+getPoints,
+getWinner
 }
