@@ -178,11 +178,46 @@ res.json(winner.rows[0])
 
 }
 
+const updateLiveScore = async(req,res)=>{
+
+const { id } = req.params
+
+const {
+batting_team,
+runs,
+wickets,
+overs,
+innings
+} = req.body
+
+await pool.query(
+`UPDATE matches
+SET 
+batting_team=$1,
+runs=$2,
+wickets=$3,
+overs=$4,
+innings=$5
+WHERE id=$6`,
+[
+batting_team,
+runs,
+wickets,
+overs,
+innings,
+id
+]
+)
+
+res.json("Live score updated")
+
+}
 
 module.exports = {
 generateMatches,
 getMatches,
 updateMatch,
 getPoints,
-getWinner
+getWinner,
+updateLiveScore
 }

@@ -8,6 +8,8 @@ import AdminDashboard from "./pages/AdminDashboard"
 import Tournament from "./pages/Tournament"
 import RegisterTeam from "./pages/RegisterTeam"
 import TournamentDetails from "./pages/TournamentDetails"
+import TournamentBracket from "./pages/TournamentBracket"
+import LiveScore from "./pages/LiveScore"
 
 function App() {
 
@@ -26,6 +28,8 @@ return (
 <Route path="/tournament" element={<Tournament/>}/>
 <Route path="/register-team/:id" element={<RegisterTeam/>}/>
 <Route path="/tournament/:id" element={<TournamentDetails/>}/>
+<Route path="/tournament-bracket/:id" element={<TournamentBracket/>}/>
+<Route path="/live-score/:id" element={<LiveScore/>}/>
 </Routes>
 
 </BrowserRouter>
