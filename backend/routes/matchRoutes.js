@@ -6,7 +6,8 @@ generateMatches,
 getMatches,
 updateMatch,
 getPoints,
-getWinner
+getWinner,
+updateLiveScore
 } = require("../controllers/matchController")
 
 router.post("/generate", generateMatches)
@@ -14,5 +15,6 @@ router.get("/:tournament_id", getMatches)
 router.put("/:id", updateMatch)
 router.get("/points/:tournament_id", getPoints)
 router.get("/winner/:tournament_id", getWinner)
+router.put("/live/:id", updateLiveScore)
 
 module.exports = router
