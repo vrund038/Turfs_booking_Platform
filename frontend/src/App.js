@@ -10,6 +10,7 @@ import RegisterTeam from "./pages/RegisterTeam"
 import TournamentDetails from "./pages/TournamentDetails"
 import TournamentBracket from "./pages/TournamentBracket"
 import LiveScore from "./pages/LiveScore"
+import TeamPlayers from "./pages/TeamPlayers"
 
 function App() {
 
@@ -30,6 +31,7 @@ return (
 <Route path="/tournament/:id" element={<TournamentDetails/>}/>
 <Route path="/tournament-bracket/:id" element={<TournamentBracket/>}/>
 <Route path="/live-score/:id" element={<LiveScore/>}/>
+<Route path="/team/:id" element={<TeamPlayers/>}/>
 </Routes>
 
 </BrowserRouter>
