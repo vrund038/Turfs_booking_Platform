@@ -26,20 +26,17 @@ const res = await API.get(`/teams/${id}`)
 setTeams(res.data)
 }
 
-
 // Fetch Matches
 const fetchMatches = async ()=>{
 const res = await API.get(`/matches/${id}`)
 setMatches(res.data)
 }
 
-
 // Fetch Points
 const fetchPoints = async ()=>{
 const res = await API.get(`/matches/points/${id}`)
 setPoints(res.data)
 }
-
 
 // Fetch Winner
 const fetchWinner = async ()=>{
@@ -61,13 +58,13 @@ return (
 </h1>
 
 <p className="text-gray-500">
-Live scoring, results & leaderboard
+Manage teams, matches & results
 </p>
 
 </div>
 
 
-{/* Teams */}
+{/* Teams Section */}
 
 <h2 className="text-xl font-semibold mb-3">
 Teams
@@ -81,7 +78,18 @@ teams.map(team=>(
 key={team.id}
 className="bg-white p-4 rounded-lg shadow hover:shadow-lg transition"
 >
+
+<h3 className="font-bold">
 🏏 {team.team_name}
+</h3>
+
+<button
+onClick={()=>navigate(`/team/${team.id}`)}
+className="bg-blue-500 text-white px-3 py-1 mt-2 rounded hover:bg-blue-600 text-sm"
+>
+View Players
+</button>
+
 </div>
 ))
 }
@@ -89,7 +97,7 @@ className="bg-white p-4 rounded-lg shadow hover:shadow-lg transition"
 </div>
 
 
-{/* Matches */}
+{/* Matches Section */}
 
 <h2 className="text-xl font-semibold mt-8 mb-3">
 Matches
@@ -181,7 +189,7 @@ Bracket
 </div>
 
 
-{/* Winner Highlight Card */}
+{/* Winner Card */}
 
 <h2 className="text-xl font-semibold mt-8">
 🏆 Tournament Winner
