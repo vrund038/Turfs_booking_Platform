@@ -178,7 +178,7 @@ res.json(winner.rows[0])
 
 }
 
-const updateLiveScore = async(req,res)=>{
+const updateLiveScore = async (req, res) => {
 
 const { id } = req.params
 
@@ -190,26 +190,61 @@ overs,
 innings
 } = req.body
 
+// Get match data
+
+const matchData = await pool.query(
+"SELECT * FROM matches WHERE id=$1",
+[id]
+)
+
+const match = matchData.rows[0]
+
+// Update score
+
 await pool.query(
 `UPDATE matches
-SET 
-batting_team=$1,
+SET batting_team=$1,
 runs=$2,
 wickets=$3,
 overs=$4,
 innings=$5
 WHERE id=$6`,
-[
-batting_team,
-runs,
-wickets,
-overs,
-innings,
-id
-]
+[batting_team, runs, wickets, overs, innings, id]
 )
 
-res.json("Live score updated")
+
+// If 2nd innings → calculate result
+
+if (innings == 2) {
+
+let resultText = ""
+let winnerId = null
+
+// Assume first innings score stored earlier
+// (For simplicity using runs directly)
+
+if (match.runs > runs) {
+resultText = `${match.team1} won by ${match.runs - runs} runs`
+winnerId = match.team1
+} else if (runs > match.runs) {
+resultText = `${match.team2} won by ${10 - wickets} wickets`
+winnerId = match.team2
+} else {
+resultText = "Match Draw"
+}
+
+// Save result
+
+await pool.query(
+`UPDATE matches
+SET result=$1, match_completed=true
+WHERE id=$2`,
+[resultText, id]
+)
+
+}
+
+res.json("Score Updated")
 
 }
 

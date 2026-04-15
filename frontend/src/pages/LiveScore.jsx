@@ -1,10 +1,11 @@
 import React, { useState } from 'react'
 import API from '../services/api'
-import { useParams } from 'react-router-dom'
+import { useParams, useNavigate } from 'react-router-dom'
 
 const LiveScore = () => {
 
 const { id } = useParams()
+const navigate = useNavigate()
 
 const [runs,setRuns] = useState("")
 const [wickets,setWickets] = useState("")
@@ -28,6 +29,18 @@ alert("Live Score Updated")
 
 }
 
+const completeMatch = async ()=>{
+
+await API.put(`/matches/live/${id}`,{
+innings:2
+})
+
+alert("Match Completed")
+
+navigate(-1)
+
+}
+
 return (
 
 <div className="min-h-screen bg-gray-100 p-8">
@@ -47,17 +60,13 @@ Update match score in real time
 </div>
 
 
-{/* Live Score Card */}
+{/* Scoreboard */}
 
 <div className="bg-white p-6 rounded-xl shadow mb-6">
 
 <h2 className="text-xl font-semibold mb-4">
 Live Scoreboard
 </h2>
-
-<div className="flex justify-between items-center">
-
-<div>
 
 <p className="text-3xl font-bold text-blue-600">
 {runs || 0}/{wickets || 0}
@@ -67,54 +76,36 @@ Live Scoreboard
 Overs: {overs || "0.0"}
 </p>
 
-</div>
-
-<div className="text-right">
-
-<p className="text-gray-600">
+<p className="text-green-600 mt-2">
 Innings: {innings}
 </p>
 
-<p className="text-green-600 font-semibold">
-Batting Team: {battingTeam || "Select"}
-</p>
-
-</div>
-
-</div>
-
 </div>
 
 
-{/* Scoring Panel */}
+{/* Scoring Form */}
 
 <div className="bg-white p-6 rounded-xl shadow">
-
-<h2 className="text-xl font-semibold mb-4">
-Update Score
-</h2>
-
 
 <div className="grid grid-cols-2 gap-4">
 
 <input
 placeholder="Runs"
-className="border p-3 rounded focus:outline-blue-400"
+className="border p-3 rounded"
 onChange={(e)=>setRuns(e.target.value)}
 />
 
 <input
 placeholder="Wickets"
-className="border p-3 rounded focus:outline-blue-400"
+className="border p-3 rounded"
 onChange={(e)=>setWickets(e.target.value)}
 />
 
 <input
 placeholder="Overs"
-className="border p-3 rounded focus:outline-blue-400"
+className="border p-3 rounded"
 onChange={(e)=>setOvers(e.target.value)}
 />
-
 
 <select
 className="border p-3 rounded"
@@ -126,7 +117,6 @@ onChange={(e)=>setBattingTeam(e.target.value)}
 <option value="2">Team 2</option>
 
 </select>
-
 
 <select
 className="border p-3 rounded"
@@ -143,14 +133,23 @@ onChange={(e)=>setInnings(e.target.value)}
 
 {/* Buttons */}
 
-<div className="mt-6">
+<div className="mt-6 flex gap-3">
 
 <button
 onClick={updateScore}
-className="bg-green-500 text-white px-6 py-2 rounded hover:bg-green-600 transition"
+className="bg-green-500 text-white px-6 py-2 rounded"
 >
 
-Update Live Score
+Update Score
+
+</button>
+
+<button
+onClick={completeMatch}
+className="bg-yellow-500 text-white px-6 py-2 rounded"
+>
+
+Complete Match
 
 </button>
 
