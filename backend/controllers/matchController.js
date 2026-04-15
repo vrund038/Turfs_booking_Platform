@@ -248,11 +248,36 @@ res.json("Score Updated")
 
 }
 
+
+const getSingleMatch = async(req,res)=>{
+
+const { id } = req.params
+
+const match = await pool.query(
+`SELECT 
+m.*,
+m.team1 as team1_id,
+m.team2 as team2_id,
+t1.team_name as team1,
+t2.team_name as team2
+FROM matches m
+JOIN teams t1 ON m.team1 = t1.id
+JOIN teams t2 ON m.team2 = t2.id
+WHERE m.id=$1`,
+[id]
+)
+
+res.json(match.rows)
+
+}
+
+
 module.exports = {
 generateMatches,
 getMatches,
 updateMatch,
 getPoints,
 getWinner,
-updateLiveScore
+updateLiveScore,
+getSingleMatch
 }
