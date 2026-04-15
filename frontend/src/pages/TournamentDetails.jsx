@@ -58,7 +58,7 @@ return (
 </h1>
 
 <p className="text-gray-500">
-Manage teams, matches & results
+Manage teams, matches, scorecards & results
 </p>
 
 </div>
@@ -164,18 +164,25 @@ Match Completed
 
 {/* Buttons */}
 
-<div className="mt-4 flex gap-2">
+<div className="mt-4 flex flex-wrap gap-2">
 
 <button
 onClick={()=>navigate(`/live-score/${match.id}`)}
-className="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600"
+className="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600 text-sm"
 >
 Live Score
 </button>
 
 <button
+onClick={()=>navigate(`/scorecard/${match.id}`)}
+className="bg-blue-500 text-white px-3 py-1 rounded hover:bg-blue-600 text-sm"
+>
+Scorecard
+</button>
+
+<button
 onClick={()=>navigate(`/tournament-bracket/${id}`)}
-className="bg-purple-500 text-white px-3 py-1 rounded hover:bg-purple-600"
+className="bg-purple-500 text-white px-3 py-1 rounded hover:bg-purple-600 text-sm"
 >
 Bracket
 </button>

@@ -1,10 +1,6 @@
 const pool = require("../config/db")
 
-// Add Player
-
 const addPlayer = async(req,res)=>{
-
-try{
 
 const { name, role, team_id } = req.body
 
@@ -17,18 +13,18 @@ RETURNING *`,
 
 res.json(player.rows[0])
 
-}catch(err){
-console.log(err)
 }
 
-}
-
-
-// Get Players by Team
 
 const getPlayers = async(req,res)=>{
 
 const { team_id } = req.params
+
+// ✅ SAFETY CHECK
+
+if(!team_id || team_id === "undefined"){
+return res.status(400).json("Invalid team id")
+}
 
 const players = await pool.query(
 "SELECT * FROM players WHERE team_id=$1",
@@ -38,6 +34,7 @@ const players = await pool.query(
 res.json(players.rows)
 
 }
+
 
 const deletePlayer = async(req,res)=>{
 
