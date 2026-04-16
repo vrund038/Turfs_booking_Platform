@@ -49,7 +49,53 @@ res.json(stats.rows)
 
 }
 
+
+const getLeaderboard = async(req,res)=>{
+
+const leaderboard = await pool.query(
+`SELECT 
+p.id,
+p.name,
+SUM(ps.runs) as total_runs,
+SUM(ps.wickets) as total_wickets
+
+FROM player_stats ps
+JOIN players p ON ps.player_id = p.id
+
+GROUP BY p.id
+
+ORDER BY total_runs DESC`
+)
+
+res.json(leaderboard.rows)
+
+}
+
+
+const getTournamentStats = async(req,res)=>{
+
+const stats = await pool.query(
+`SELECT 
+p.id,
+p.name,
+SUM(ps.runs) as total_runs,
+SUM(ps.wickets) as total_wickets,
+SUM(CASE WHEN ps.runs >= 50 THEN 1 ELSE 0 END) as fifties,
+SUM(CASE WHEN ps.runs >= 100 THEN 1 ELSE 0 END) as hundreds
+
+FROM player_stats ps
+JOIN players p ON ps.player_id = p.id
+
+GROUP BY p.id`
+)
+
+res.json(stats.rows)
+
+}
+
 module.exports = {
 addStats,
-getStats
+getStats,
+getLeaderboard,
+getTournamentStats 
 }
