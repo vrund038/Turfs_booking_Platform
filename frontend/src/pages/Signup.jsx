@@ -2,42 +2,46 @@ import React, { useState } from "react"
 import API from "../services/api"
 import { useNavigate, Link } from "react-router-dom"
 
-const Login = () => {
+const Signup = () => {
 
+const [name,setName] = useState("")
 const [email,setEmail] = useState("")
 const [password,setPassword] = useState("")
 const [error,setError] = useState("")
 
 const navigate = useNavigate()
 
-const handleLogin = async ()=>{
+const handleSignup = async ()=>{
+
+if(!name || !email || !password){
+setError("All fields required")
+return
+}
 
 try{
 
-const res = await API.post("/auth/login",{
+await API.post("/auth/register",{
+name,
 email,
 password
 })
 
-// Save user
-localStorage.setItem("user", JSON.stringify(res.data))
-
-navigate("/")
+navigate("/login")
 
 }catch(err){
-setError("Invalid email or password")
+setError("Signup failed")
 }
 
 }
 
 return (
 
-<div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 to-purple-100">
+<div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-purple-50 to-blue-100">
 
 <div className="bg-white p-8 rounded-2xl shadow-xl w-[400px]">
 
 <h2 className="text-2xl font-bold mb-4 text-center">
-🔐 Login
+📝 Signup
 </h2>
 
 {error && (
@@ -45,6 +49,12 @@ return (
 {error}
 </div>
 )}
+
+<input
+placeholder="Name"
+className="border p-2 w-full mb-3 rounded"
+onChange={(e)=>setName(e.target.value)}
+/>
 
 <input
 type="email"
@@ -61,16 +71,16 @@ onChange={(e)=>setPassword(e.target.value)}
 />
 
 <button
-onClick={handleLogin}
-className="w-full bg-gradient-to-r from-blue-500 to-indigo-500 text-white py-2 rounded-lg"
+onClick={handleSignup}
+className="w-full bg-gradient-to-r from-purple-500 to-indigo-500 text-white py-2 rounded-lg"
 >
-Login
+Create Account
 </button>
 
 <p className="text-sm text-center mt-4">
-Don’t have an account?{" "}
-<Link to="/signup" className="text-blue-600">
-Signup
+Already have an account?{" "}
+<Link to="/login" className="text-blue-600">
+Login
 </Link>
 </p>
 
@@ -82,4 +92,4 @@ Signup
 
 }
 
-export default Login
+export default Signup

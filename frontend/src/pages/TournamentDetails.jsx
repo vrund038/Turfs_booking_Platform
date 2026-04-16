@@ -180,6 +180,11 @@ Scorecard
 ))}
 
 </div>
+{matches.length === 0 && (
+<p className="text-gray-500">
+No matches available
+</p>
+)}
 
 
 {/* Winner */}
