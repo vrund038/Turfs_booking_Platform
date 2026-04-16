@@ -1,82 +1,78 @@
 import React, { useEffect, useState } from 'react'
 import API from '../services/api'
-import TurfCard from '../components/TurfCard'
+import { useNavigate } from 'react-router-dom'
 
 const Home = () => {
 
 const [turfs,setTurfs] = useState([])
-const [featured,setFeatured] = useState([])
+const [loading,setLoading] = useState(true)
+
+const navigate = useNavigate()
 
 useEffect(()=>{
 fetchTurfs()
-fetchFeatured()
 },[])
 
 const fetchTurfs = async ()=>{
 const res = await API.get("/turfs")
 setTurfs(res.data)
-}
-
-const fetchFeatured = async ()=>{
-const res = await API.get("/turfs/featured")
-setFeatured(res.data)
-}
-
-const handleFeatured = async (id)=>{
-
-await API.put(`/turfs/featured/${id}`)
-
-fetchFeatured()
-
+setLoading(false)
 }
 
 return (
 
+<div className="min-h-screen bg-gradient-to-br from-blue-50 to-purple-50 p-8">
+
+<h1 className="text-4xl font-bold mb-8 text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-purple-600">
+🏟️ Explore Turfs
+</h1>
+
+{loading ? (
+<p className="text-gray-500">Loading turfs...</p>
+) : turfs.length === 0 ? (
+<p className="text-gray-500">No turfs available</p>
+) : (
+
+<div className="grid grid-cols-3 gap-8">
+
+{turfs.map(t=>(
+<div 
+key={t.id}
+className="bg-white rounded-2xl shadow-lg overflow-hidden hover:scale-105 transition duration-300"
+>
+
+<img 
+src={t.image}
+className="h-44 w-full object-cover"
+/>
+
 <div className="p-4">
 
-{/* Featured Section */}
+<h2 className="text-xl font-bold">{t.name}</h2>
 
-<h2 className="text-2xl font-bold mb-4">
-⭐ Featured Turfs
-</h2>
+<p className="text-gray-500 text-sm mt-1">
+📍 {t.location}
+</p>
 
-<div className="grid grid-cols-3 gap-4 mb-8">
-
-{
-featured.map(turf=>(
-<TurfCard key={turf.id} turf={turf}/>
-))
-}
-
-</div>
-
-
-{/* All Turfs Section */}
-
-<h2 className="text-2xl font-bold mb-4">
-All Turfs
-</h2>
-
-<div className="grid grid-cols-3 gap-4">
-
-{
-turfs.map(turf=>(
-<div key={turf.id}>
-
-<TurfCard turf={turf}/>
+<p className="text-green-600 font-semibold mt-2">
+₹ {t.price}/hr
+</p>
 
 <button
-onClick={()=>handleFeatured(turf.id)}
-className="bg-yellow-500 text-white px-4 py-2 mt-2 rounded"
+onClick={()=>navigate(`/booking/${t.id}`)}
+className="w-full mt-4 bg-gradient-to-r from-blue-500 to-indigo-500 text-white py-2 rounded-lg hover:opacity-90"
 >
-Make Featured
+Book Now
 </button>
 
 </div>
-))
-}
 
 </div>
+))}
+
+</div>
+
+)}
 
 </div>
 
