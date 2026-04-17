@@ -2,11 +2,14 @@ const jwt = require("jsonwebtoken")
 
 const adminAuth = (req,res,next)=>{
 
-const token = req.headers.authorization
+const authHeader = req.headers.authorization
 
-if(!token){
+if(!authHeader){
 return res.status(401).json("No token")
 }
+
+// ✅ FIX HERE
+const token = authHeader.split(" ")[1]
 
 try{
 
@@ -16,11 +19,12 @@ if(decoded.role !== "admin"){
 return res.status(403).json("Admin only")
 }
 
+req.user = decoded
 next()
 
 }catch(error){
 
-res.status(401).json("Invalid token")
+return res.status(401).json("Invalid token")
 
 }
 

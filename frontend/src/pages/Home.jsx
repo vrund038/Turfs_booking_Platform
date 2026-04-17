@@ -54,8 +54,9 @@ className="h-44 w-full object-cover"
 📍 {t.location}
 </p>
 
-<p className="text-green-600 font-semibold mt-2">
-₹ {t.price}/hr
+<p className="mt-2 text-lg font-bold text-green-600">
+₹ {t.price_per_hour || 0}
+<span className="text-sm text-gray-500"> / hour</span>
 </p>
 
 <button

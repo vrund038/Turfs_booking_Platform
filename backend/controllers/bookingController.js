@@ -34,7 +34,36 @@ res.json(bookings.rows)
 
 }
 
+const getAllBookings = async(req,res)=>{
+
+const bookings = await pool.query(
+`SELECT b.*, t.name as turf_name 
+FROM bookings b
+JOIN turfs t ON b.turf_id = t.id
+ORDER BY b.id DESC`
+)
+
+res.json(bookings.rows)
+
+}
+
+
+const deleteBooking = async(req,res)=>{
+
+const { id } = req.params
+
+await pool.query(
+"DELETE FROM bookings WHERE id=$1",
+[id]
+)
+
+res.json("Booking Deleted")
+
+}
+
 module.exports = {
 createBooking,
-getBookings
+getBookings,
+getAllBookings,
+deleteBooking
 }
