@@ -31,22 +31,14 @@ const getSingleTurf = async(req,res)=>{
 
 const addTurf = async(req,res)=>{
 
-try{
+const { name, location, price, image } = req.body
 
-const { name, location, price_per_hour, image } = req.body
-
-const turf = await pool.query(
-`INSERT INTO turfs(name,location,price_per_hour,image)
-VALUES($1,$2,$3,$4)
-RETURNING *`,
-[name,location,price_per_hour,image]
+await pool.query(
+"INSERT INTO turfs(name, location, price_per_hour, image) VALUES($1,$2,$3,$4)",
+[name, location, price, image]
 )
 
-res.json(turf.rows[0])
-
-}catch(error){
-console.log(error)
-}
+res.json("Turf Added")
 
 }
 
@@ -81,11 +73,25 @@ res.json("Turf Featured")
 }
 
 
+const deleteTurf = async(req,res)=>{
+
+const { id } = req.params
+
+await pool.query(
+"DELETE FROM turfs WHERE id=$1",
+[id]
+)
+
+res.json("Turf Deleted")
+
+}
+
 // Export Controllers (ADD THIS AT BOTTOM)
 module.exports = {
 getTurfs,
 getSingleTurf,
 addTurf,
 getFeaturedTurfs,
-setFeatured
+setFeatured,
+deleteTurf
 }

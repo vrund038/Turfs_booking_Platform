@@ -22,7 +22,7 @@ const getUser = () => {
 }
 
 const data = getUser()
-const user = data?.user   // ✅ FIXED
+const user = data?.user  
 
 
 useEffect(()=>{

@@ -21,6 +21,10 @@ import TeamPlayers from "./pages/TeamPlayers"
 import Scorecard from "./pages/Scorecard"
 import Analytics from "./pages/Analytics"
 import Signup from "./pages/Signup"
+import AddTurf from "./pages/AddTurf"
+import AdminBookings from "./pages/AdminBookings"
+import AdminUsers from "./pages/AdminUsers"
+
 
 function App() {
 
@@ -139,6 +143,35 @@ element={
 </AdminRoute>
 }
 />
+
+<Route 
+path="/add-turf" 
+element={
+<AdminRoute>
+<AddTurf/>
+</AdminRoute>
+}
+/>
+
+<Route 
+path="/admin/bookings" 
+element={
+<AdminRoute>
+<AdminBookings/>
+</AdminRoute>
+}
+/>
+
+<Route 
+path="/admin/users" 
+element={
+<AdminRoute>
+<AdminUsers/>
+</AdminRoute>
+}
+/>
+
+
 
 </Routes>
 

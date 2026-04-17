@@ -1,83 +1,87 @@
 const pool = require("../config/db")
-const bcrypt = require("bcrypt")
 const jwt = require("jsonwebtoken")
 
-// Register
+// LOGIN
+const login = async(req,res)=>{
 
-const registerUser = async (req,res)=>{
-
-try{
-
-const { name,email,phone,password } = req.body
-
-const hashedPassword = await bcrypt.hash(password,10)
+const { email, password } = req.body
 
 const user = await pool.query(
-`INSERT INTO users(name,email,phone,password)
-VALUES($1,$2,$3,$4)
-RETURNING *`,
-[name,email,phone,hashedPassword]
-)
-
-res.json(user.rows[0])
-
-}catch(error){
-
-console.log(error)
-
-}
-
-}
-
-
-// Login
-
-const loginUser = async (req,res)=>{
-
-try{
-
-const { email,password } = req.body
-
-const user = await pool.query(
-"SELECT * FROM users WHERE email=$1",
-[email]
+"SELECT * FROM users WHERE email=$1 AND password=$2",
+[email, password]
 )
 
 if(user.rows.length === 0){
-return res.json({message:"User not found"})
+return res.status(400).json("Invalid credentials")
 }
 
-const validPassword = await bcrypt.compare(
-password,
-user.rows[0].password
-)
+const u = user.rows[0]
 
-if(!validPassword){
-return res.json({message:"Invalid Password"})
-}
-
+// ✅ IMPORTANT: include role in token
 const token = jwt.sign(
-{
-id:user.rows[0].id,
-role:user.rows[0].role
-},
+{ id: u.id, role: u.role },
 "secretkey"
 )
 
 res.json({
 token,
-user:user.rows[0]
+user: {
+id: u.id,
+name: u.name,
+email: u.email,
+role: u.role
+}
 })
 
-}catch(error){
+}
 
-console.log(error)
+
+// REGISTER
+const register = async(req,res)=>{
+
+const { name, email, password } = req.body
+
+await pool.query(
+"INSERT INTO users(name,email,password,role) VALUES($1,$2,$3,'user')",
+[name,email,password]
+)
+
+res.json("User Registered")
 
 }
 
+
+// ✅ GET ALL USERS (ADMIN)
+const getUsers = async(req,res)=>{
+
+const users = await pool.query(
+"SELECT id, name, email, role FROM users ORDER BY id DESC"
+)
+
+res.json(users.rows)
+
 }
 
+
+// ✅ DELETE USER
+const deleteUser = async(req,res)=>{
+
+const { id } = req.params
+
+await pool.query(
+"DELETE FROM users WHERE id=$1",
+[id]
+)
+
+res.json("User Deleted")
+
+}
+
+
+// EXPORT ALL
 module.exports = {
-registerUser,
-loginUser
+login,
+register,
+getUsers,
+deleteUser
 }
