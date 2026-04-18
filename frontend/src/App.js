@@ -24,6 +24,7 @@ import Signup from "./pages/Signup"
 import AddTurf from "./pages/AddTurf"
 import AdminBookings from "./pages/AdminBookings"
 import AdminUsers from "./pages/AdminUsers"
+import UserAnalytics from "./pages/UserAnalytics"
 
 
 function App() {
@@ -85,6 +86,15 @@ path="/tournament/:id"
 element={
 <ProtectedRoute>
 <TournamentDetails/>
+</ProtectedRoute>
+}
+/>
+
+<Route 
+path="/my-analytics" 
+element={
+<ProtectedRoute>
+<UserAnalytics/>
 </ProtectedRoute>
 }
 />
