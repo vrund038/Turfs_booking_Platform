@@ -1,8 +1,9 @@
-import { Link, useNavigate } from "react-router-dom"
+import { Link, useNavigate, useLocation } from "react-router-dom"
 
 const Navbar = () => {
 
 const navigate = useNavigate()
+const location = useLocation()
 
 const getUser = () => {
   try {
@@ -13,44 +14,77 @@ const getUser = () => {
 }
 
 const data = getUser()
-const user = data?.user   // ✅ FIXED
+const user = data?.user
 
 const logout = ()=>{
 localStorage.removeItem("user")
 navigate("/login")
 }
 
+// ✅ Active route helper
+const isActive = (path) => location.pathname === path
+
 return (
 
 <div className="bg-white/80 backdrop-blur-md shadow-md px-8 py-4 flex justify-between items-center sticky top-0 z-50">
 
+{/* Logo */}
 <h1 
 className="font-bold text-2xl text-blue-600 cursor-pointer"
-onClick={()=>navigate("/")}
->
+onClick={()=>navigate("/")}>
 🏏 TurfBook
 </h1>
 
+{/* Menu */}
 <div className="flex gap-6 items-center text-gray-700 font-medium">
 
-<Link to="/">Home</Link>
+{/* Home */}
+<Link 
+to="/" 
+className={isActive("/") ? "text-blue-600 font-semibold" : ""}
+>
+Home
+</Link>
 
-{user && <Link to="/tournament">Tournament</Link>}
-{user && <Link to="/analytics/1">Analytics</Link>}
+{/* Logged-in only */}
+{user && (
+<>
+<Link 
+to="/tournament"
+className={isActive("/tournament") ? "text-blue-600" : ""}
+>
+Tournament
+</Link>
 
+<Link 
+to="/my-analytics"
+className={isActive("/my-analytics") ? "text-blue-600" : ""}
+>
+My Analytics
+</Link>
+</>
+)}
+
+{/* Admin only */}
 {user?.role === "admin" && (
-<Link to="/admin" className="text-purple-600">
+<Link 
+to="/admin" 
+className={isActive("/admin") ? "text-purple-600 font-semibold" : "text-purple-600"}
+>
 Admin
 </Link>
 )}
 
+{/* Right side */}
 {user ? (
 <>
-<span className="text-sm">Hi, {user.name}</span>
+<span className="text-sm text-gray-600">
+Hi, {user.name}
+</span>
 
 <button 
 onClick={logout}
-className="bg-red-500 text-white px-3 py-1 rounded-lg"
+className="bg-red-500 text-white px-3 py-1 rounded-lg hover:bg-red-600 transition"
 >
 Logout
 </button>
